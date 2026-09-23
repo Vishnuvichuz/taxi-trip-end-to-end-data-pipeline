@@ -1,25 +1,24 @@
 # 🚕 Taxi Trip End-to-End Data Pipeline
 
-An end-to-end **Big Data Engineering pipeline** designed to process and transform **112+ million taxi trip records** using **PySpark, Databricks, SQL, Apache Airflow, Docker, and Delta Lake**.
+An end-to-end **Big Data Engineering pipeline** designed to process **112+ million taxi trip records** using **PySpark, Databricks, SQL, and Delta Lake**.
 
-The project implements the **Medallion Architecture** to ingest, validate, clean, transform, and organize large-scale taxi trip data into structured Delta tables for efficient analysis.
+The project focuses on data quality checking, cleaning, transformation, and storage of large-scale taxi trip data using **PySpark** and the **Medallion Architecture**.
 
 ---
 
 ## 📌 Project Overview
 
-This project demonstrates how to build and orchestrate a scalable data pipeline for processing large volumes of taxi trip data.
+This project demonstrates how to process and transform a large-scale taxi trip dataset using distributed data processing technologies.
 
 The pipeline performs:
 
-- Extraction and processing of **112+ million records**
-- Data quality checks and validation
-- Data cleaning and transformation using **PySpark**
-- Storage of processed data in **Delta Tables**
-- Data organization using **Medallion Architecture**
-- SQL-based transformation and creation of category-specific tables
-- Pipeline orchestration and scheduling using **Apache Airflow**
-- Containerized execution using **Docker**
+- Processing of **112+ million taxi trip records**
+- Data quality checking using **PySpark**
+- Data cleaning and transformation
+- Loading processed data into **Delta Tables**
+- Implementation of **Medallion Architecture**
+- SQL-based transformation and creation of category-based tables
+- Large-scale data processing using **Databricks**
 
 ---
 
@@ -28,73 +27,83 @@ The pipeline performs:
 The project follows the **Medallion Architecture**:
 
 ```text
-                Taxi Trip Dataset
-                       │
-                       ▼
-              ┌─────────────────┐
-              │   Bronze Layer  │
-              │  Raw Data       │
-              └────────┬────────┘
-                       │
-                       ▼
-              ┌─────────────────┐
-              │   Silver Layer  │
-              │ Cleaned &       │
-              │ Validated Data  │
-              └────────┬────────┘
-                       │
-                       ▼
-              ┌─────────────────┐
-              │    Gold Layer   │
-              │ Business /      │
-              │ Category Tables │
-              └────────┬────────┘
-                       │
-                       ▼
-                 Data Analysis
+                  Taxi Trip Dataset
+                         │
+                         ▼
+                ┌─────────────────┐
+                │  Bronze Layer   │
+                │    Raw Data     │
+                └────────┬────────┘
+                         │
+                         ▼
+                ┌─────────────────┐
+                │  Silver Layer   │
+                │ Quality Check   │
+                │ Cleaned Data    │
+                └────────┬────────┘
+                         │
+                         ▼
+                ┌─────────────────┐
+                │   Gold Layer    │
+                │ Transformed &   │
+                │ Category Tables │
+                └────────┬────────┘
+                         │
+                         ▼
+                   Data Analysis
 ```
 
 ---
 
 ## 🔄 Data Pipeline Workflow
 
-### 1. Data Extraction
+### 1. Data Ingestion
 
-The pipeline extracts a large-scale taxi trip dataset containing **112+ million records**.
+The project uses a large-scale taxi trip dataset containing **112+ million records**.
 
-### 2. Data Quality Checks
+The dataset is loaded into the Databricks environment for processing.
 
-The raw data is analyzed to identify data quality issues such as:
+### 2. Data Quality Checking
+
+**PySpark** is used to check the quality of the dataset before performing further transformations.
+
+The data is examined for issues such as:
 
 - Missing values
-- Invalid records
 - Duplicate records
-- Incorrect or inconsistent data
-- Invalid data types
+- Invalid records
+- Incorrect data types
+- Inconsistent data
 
 ### 3. Data Cleaning
 
-**PySpark** is used to clean and transform the dataset.
+PySpark is used to clean the dataset and handle identified data quality issues.
 
-The cleaning process prepares the data for reliable downstream processing and analysis.
+The cleaned dataset is prepared for downstream processing and analysis.
 
-### 4. Delta Table Storage
+### 4. Delta Table Loading
 
-The processed data is stored as **Delta Tables** in Databricks.
+After cleaning and transformation, the processed data is loaded into **Delta Tables**.
 
-Delta Lake provides a reliable storage layer for the transformed datasets.
+```text
+Raw Dataset
+     ↓
+PySpark Quality Check
+     ↓
+Data Cleaning
+     ↓
+Transformation
+     ↓
+Delta Table
+```
 
-### 5. SQL Transformations
+### 5. SQL Transformation
 
-**SQL** is used to transform the processed dataset and create different category-based tables for analytical purposes.
+**SQL** is used to query the processed Delta data and create different category-based tables for analytical purposes.
 
-### 6. Pipeline Orchestration
+### 6. Databricks Processing
 
-**Apache Airflow** is used to orchestrate the pipeline and schedule the execution of the data processing workflow.
-
-### 7. Docker Environment
-
-**Docker** is used to provide a consistent environment for running the Airflow-based orchestration workflow.
+**Databricks** is used as the data processing environment for executing PySpark and SQL workloads.
 
 ---
 
@@ -102,9 +111,10 @@ Delta Lake provides a reliable storage layer for the transformed datasets.
 
 ### 🥉 Bronze Layer
 
-Contains the raw taxi trip data after ingestion.
+Contains the raw taxi trip dataset.
 
 **Purpose:**
+
 - Store raw data
 - Preserve the original dataset
 - Provide the initial layer for processing
@@ -114,15 +124,16 @@ Contains the raw taxi trip data after ingestion.
 Contains cleaned and validated taxi trip data.
 
 **Processing includes:**
-- Data quality validation
+
+- Data quality checking
 - Missing-value handling
+- Duplicate handling
 - Data cleaning
 - Data type transformations
-- Record-level validation
 
 ### 🥇 Gold Layer
 
-Contains transformed and structured data designed for analytical use.
+Contains transformed and structured data for analytical use.
 
 SQL transformations are used to create different category-based tables from the processed dataset.
 
@@ -132,13 +143,10 @@ SQL transformations are used to create different category-based tables from the 
 
 | Technology | Purpose |
 |---|---|
-| **Python** | Pipeline development and data processing |
-| **PySpark** | Distributed processing of large-scale data |
-| **Databricks** | Data engineering and Spark execution environment |
+| **PySpark** | Data quality checking, cleaning, and transformation |
+| **Databricks** | Data processing and execution environment |
 | **SQL** | Data transformation and analytical tables |
-| **Delta Lake** | Reliable storage of processed data |
-| **Apache Airflow** | Pipeline orchestration and scheduling |
-| **Docker** | Containerized execution environment |
+| **Delta Lake** | Storage of processed data |
 
 ---
 
@@ -148,24 +156,92 @@ The project uses a large-scale **Taxi Trip Dataset** containing:
 
 - **112+ million records**
 - Taxi trip-related information
-- Multiple attributes suitable for data quality validation and analytical transformations
+- Multiple attributes for data quality checking and analysis
 
-The large dataset is used to demonstrate **distributed data processing and Big Data engineering concepts**.
+The large dataset demonstrates the use of distributed processing for **Big Data Engineering** workloads.
 
 ---
 
 ## 🚀 Key Features
 
-- ⚡ Processes **112+ million records**
-- 🔍 Performs data quality checks
+- ⚡ Processes **112+ million taxi trip records**
+- 🔍 Performs data quality checks using PySpark
 - 🧹 Cleans and transforms large-scale datasets
+- ⚡ Uses PySpark for distributed data processing
 - 🏗️ Implements **Medallion Architecture**
-- 🔥 Uses **PySpark** for distributed data processing
 - 🗄️ Stores processed data in **Delta Tables**
-- 📊 Creates analytical tables using **SQL**
-- ⏱️ Automates pipeline execution with **Apache Airflow**
-- 🐳 Uses **Docker** for containerized orchestration
-- ☁️ Uses **Databricks** as the data processing platform
+- 📊 Uses SQL for analytical transformations
+- ☁️ Uses Databricks for scalable data processing
+
+---
+
+## 🔁 Pipeline Flow
+
+```text
+┌──────────────────────┐
+│  Taxi Trip Dataset   │
+│   112+ Million Rows  │
+└──────────┬───────────┘
+           │
+           ▼
+┌──────────────────────┐
+│   Bronze Layer       │
+│      Raw Data        │
+└──────────┬───────────┘
+           │
+           ▼
+┌──────────────────────┐
+│ PySpark Data Quality │
+│       Checks         │
+└──────────┬───────────┘
+           │
+           ▼
+┌──────────────────────┐
+│   Data Cleaning &    │
+│   Transformation     │
+└──────────┬───────────┘
+           │
+           ▼
+┌──────────────────────┐
+│   Silver Layer       │
+│   Cleaned Data       │
+└──────────┬───────────┘
+           │
+           ▼
+┌──────────────────────┐
+│    Gold Layer        │
+│ Category-Based Tables│
+└──────────┬───────────┘
+           │
+           ▼
+┌──────────────────────┐
+│    Delta Tables      │
+└──────────────────────┘
+           │
+           ▼
+      SQL Analysis
+```
+
+---
+
+## 📁 Project Structure
+
+```text
+Taxi-Trip-End-to-End-Data-Pipeline/
+│
+├── databricks/
+│   ├── bronze/
+│   ├── silver/
+│   └── gold/
+│
+├── sql/
+│   └── transformations/
+│
+├── README.md
+└── requirements.txt
+```
+
+> Update the folder structure according to your actual GitHub repository.
 
 ---
 
@@ -175,88 +251,70 @@ The large dataset is used to demonstrate **distributed data processing and Big D
 
 Make sure you have:
 
-- Python
 - Databricks account/workspace
-- Apache Airflow
-- Docker
-- SQL knowledge
-- PySpark environment
+- PySpark
+- SQL
+- Python
 
-### Step 1: Clone the Repository
+### 1. Clone the Repository
 
 ```bash
 git clone <your-repository-url>
 cd Taxi-Trip-End-to-End-Data-Pipeline
 ```
 
-### Step 2: Configure Databricks
+### 2. Configure Databricks
 
-Configure your Databricks environment and provide the required dataset and connection details.
+Upload or connect the taxi trip dataset to your Databricks environment.
 
-### Step 3: Start Docker
+### 3. Run PySpark Processing
 
-Start the Docker environment used for the Airflow orchestration setup.
-
-```bash
-docker compose up
-```
-
-### Step 4: Configure Airflow
-
-Place the pipeline DAG files in the Airflow `dags` directory and configure the required connections.
-
-### Step 5: Run the Pipeline
-
-Trigger the Airflow DAG to execute the pipeline.
+Execute the PySpark workflow to:
 
 ```text
-Airflow
-   ↓
-Extract Data
-   ↓
-Data Quality Checks
-   ↓
-PySpark Processing
-   ↓
-Bronze
-   ↓
-Silver
-   ↓
-Gold
-   ↓
-SQL Transformations
-   ↓
-Analytical Tables
+Load Dataset
+     ↓
+Check Data Quality
+     ↓
+Clean Data
+     ↓
+Transform Data
+     ↓
+Load into Delta Table
 ```
+
+### 4. Run SQL Transformations
+
+Execute the SQL queries to create the required category-based tables from the processed Delta data.
 
 ---
 
 ## 🎯 Learning Outcomes
 
-This project helped demonstrate practical experience with:
+This project provided practical experience with:
 
 - Big Data processing
-- Distributed data processing with PySpark
+- Processing **112+ million records**
+- PySpark
 - Databricks
 - Delta Lake
 - Medallion Architecture
-- Data quality and validation
+- Data quality checking
+- Data cleaning
 - SQL transformations
-- Workflow orchestration
-- Apache Airflow
-- Docker
+- Large-scale data processing
 - End-to-end data pipeline development
 
 ---
 
 ## 🔮 Future Improvements
 
+- Implement incremental data processing
 - Add automated data quality testing
-- Implement pipeline monitoring and alerting
-- Add incremental data processing
-- Implement partitioning and optimization strategies
-- Add automated testing for pipeline components
-- Integrate visualization tools for analytical dashboards
+- Optimize Delta Tables using partitioning
+- Implement Delta Lake optimization techniques
+- Add data visualization dashboards
+- Add pipeline monitoring
 
 ---
 
@@ -272,4 +330,4 @@ B.Tech Computer Science Engineering Graduate
 
 ## ⭐ Project Highlights
 
-> **112+ Million Records | PySpark | Databricks | Delta Lake | SQL | Apache Airflow | Docker | Medallion Architecture**
+> **112+ Million Records | PySpark | Databricks | SQL | Delta Lake | Medallion Architecture**
